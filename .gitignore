@@ -1,0 +1,5 @@
+bin/
+*.jsonl
+*.exe
+.env
+config.json

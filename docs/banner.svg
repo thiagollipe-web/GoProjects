@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-label="GoProjects">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1f2e"/><stop offset="1" stop-color="#00add8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="300" rx="16" fill="url(#bg)"/>
+  <g fill="none" stroke="#ffffff" stroke-opacity=".12" stroke-width="2">
+    <circle cx="1040" cy="150" r="110"/><circle cx="1040" cy="150" r="70"/><circle cx="1040" cy="150" r="30"/>
+  </g>
+  <text x="70" y="140" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="68" font-weight="700" fill="#ffffff">GoProjects</text>
+  <text x="72" y="190" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="26" fill="#d6f3fb">Go tools for LLM serving, dataset preparation and symbolic reasoning</text>
+  <g font-family="Consolas, Menlo, monospace" font-size="20" fill="#0b1f2e">
+    <rect x="72" y="220" width="190" height="38" rx="19" fill="#ffffff"/><text x="94" y="246">llm-gateway</text>
+    <rect x="278" y="220" width="170" height="38" rx="19" fill="#ffffff"/><text x="300" y="246">distillkit</text>
+    <rect x="464" y="220" width="190" height="38" rx="19" fill="#ffffff"/><text x="486" y="246">go-reasoner</text>
+  </g>
+</svg>

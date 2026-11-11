@@ -15,6 +15,21 @@ Built with the Go standard library only (`net/http`, `log/slog`, Go 1.22 routing
 - **Operations** – `/healthz`, `/metrics` (JSON: requests, failures, breaker state per provider), request IDs, structured JSON logs, graceful shutdown.
 - **Secrets stay out of files** – provider keys are read from environment variables named in the config.
 
+## Architecture
+
+```mermaid
+flowchart LR
+    C[Client<br/>OpenAI-style request] --> M[Middleware<br/>request id, auth, rate limit]
+    M --> H[POST /v1/chat/completions]
+    H --> P{Pool}
+    P -->|1st| U1[ollama-local]
+    P -->|fallback on 429 / 5xx / timeout| U2[groq]
+    P -->|fallback| U3[maritaca]
+    U1 & U2 & U3 -->|stream passthrough| C
+    P -.-> B[Circuit breaker per upstream<br/>closed / open / half-open]
+```
+
+
 ## Quick start
 
 ```bash
@@ -33,6 +48,21 @@ curl localhost:8080/v1/chat/completions \
 ```
 
 The response header `X-Gateway-Provider` tells you which upstream answered.
+
+## Example
+
+The first upstream fails with a 500, so the gateway answers from the backup and says which provider served the request:
+
+```text
+$ curl -si localhost:8080/v1/chat/completions -d '{"model":"fast","messages":[{"role":"user","content":"hi"}]}'
+HTTP/1.1 200 OK
+X-Gateway-Provider: backup
+
+$ curl -s localhost:8080/metrics
+{"providers":[{"name":"primary","breaker":"closed","requests":1,"failures":1},
+              {"name":"backup","breaker":"closed","requests":1,"failures":0}],"uptime_seconds":1}
+```
+
 
 ## Configuration
 

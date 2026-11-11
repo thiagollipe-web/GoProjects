@@ -16,6 +16,23 @@ It does not use a neural network or an LLM. Everything it "knows" comes from exp
 | `internal/connector` | Optional lookups against Wikipedia, DuckDuckGo and the GitHub search API (plain `net/http`, with context and timeouts) |
 | `cmd/reasoner` | Interactive CLI |
 
+## Architecture
+
+```mermaid
+flowchart TD
+    U[User input] --> N[nlp: tokenizer, intent classifier, entity extraction]
+    N -->|teach| M[(memory: knowledge graph)]
+    N -->|question| M
+    N -->|code request| R[reasoner: forward / backward chaining]
+    R -->|derived facts + proof trace| C[coder: template generator]
+    C --> V[AST + go vet validation]
+    V --> O[nlg: response]
+    M --> O
+    R -.->|/why| O
+    O -.->|feedback adjusts weights| M
+```
+
+
 ## How it behaves
 
 - **Learns from feedback.** Positive/negative feedback ("perfeito", "errado") raises or lowers the weight of the last graph node and of the rules used in the last answer.

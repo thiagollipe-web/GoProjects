@@ -11,6 +11,18 @@ Standard library only, no dependencies, single static binary.
 3. **Fine-tune** – train the small model on the exported file (done outside this repository, e.g. Unsloth/Colab).
 4. **Serve** – import the resulting GGUF into Ollama with [`deploy/Modelfile`](deploy/Modelfile) (Gemma 2 2B, Q4_K_M, Gemma chat template, 4096 context).
 
+```mermaid
+flowchart LR
+    A[Knowledge base JSON] --> B[Clean answers<br/>drop follow-up sections]
+    B --> C[Filter short answers]
+    C --> D[De-duplicate questions]
+    D --> E{Hash split}
+    E -->|~95%| F[train.jsonl]
+    E -->|~5%| G[val.jsonl]
+    F & G --> H[alpaca / sharegpt / gemma]
+```
+
+
 ## What the tool does
 
 - Removes the teacher's trailing "follow-up questions" sections from answers.
