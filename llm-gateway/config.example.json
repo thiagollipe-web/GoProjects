@@ -1,0 +1,29 @@
+{
+  "listen": ":8080",
+  "client_keys_env": "GATEWAY_CLIENT_KEYS",
+  "rate_per_minute": 60,
+  "breaker_failures": 3,
+  "breaker_cooldown": "30s",
+  "upstreams": [
+    {
+      "name": "ollama-local",
+      "base_url": "http://localhost:11434/v1",
+      "models": { "fast": "qwen2.5:0.5b" },
+      "timeout": "120s"
+    },
+    {
+      "name": "groq",
+      "base_url": "https://api.groq.com/openai/v1",
+      "api_key_env": "GROQ_API_KEY",
+      "models": { "fast": "llama-3.1-8b-instant", "smart": "llama-3.3-70b-versatile" },
+      "timeout": "60s"
+    },
+    {
+      "name": "maritaca",
+      "base_url": "https://chat.maritaca.ai/api",
+      "api_key_env": "MARITACA_API_KEY",
+      "models": { "smart": "sabia-3" },
+      "timeout": "60s"
+    }
+  ]
+}
